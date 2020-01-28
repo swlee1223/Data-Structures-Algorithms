@@ -2,10 +2,11 @@
 # coding: utf-8
 
 import unittest
+
 class Tests(unittest.TestCase):
-    def array_testing(self, arr):
-        expected = sorted(arr)
-        result = insertion_sort(arr)
+    def array_testing(self, arr, rev_arg = False):
+        expected = sorted(arr, reverse = rev_arg)
+        result = insertion_sort(arr, reverse = rev_arg)
         self.assertEqual(result, expected)
 
     def test_small_1(self):
@@ -22,9 +23,19 @@ class Tests(unittest.TestCase):
 
     def test_empty(self):
         self.array_testing([])
-    
 
-def insertion_sort(arr):
+    def test_reverse(self):
+        self.array_testing([4, 3, 2, 2, 1, 2 ,30, 2, 4, 5, 6, 25], rev_arg = True)
+
+
+
+def insertion_sort(arr, reverse = False):
+    ''' Sorting arrays to non-decreasing (ascending or same) array using Insertion Sort
+    
+    Args : array of n numbers (n integers)
+    Returns : Non-decreasing (ascending or same) array
+    '''
+
     # this is the index for j (the key)
     for j in range(1, len(arr)):
         key = arr[j]
@@ -36,8 +47,12 @@ def insertion_sort(arr):
             i = i-1
 
         arr[i+1] = key
-    return(arr)
 
+
+    if reverse:
+        arr = arr[::-1]
+
+    return(arr)
 
 
 if __name__ == '__main__':
