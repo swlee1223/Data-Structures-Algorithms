@@ -4,9 +4,9 @@
 import unittest
 
 class Tests(unittest.TestCase):
-    def array_testing(self, arr, rev_arg = False):
-        expected = sorted(arr, reverse = rev_arg)
-        result = bubble_sort(arr, reverse = rev_arg)
+    def array_testing(self, arr):
+        expected = sorted(arr)
+        result = bubble_sort(arr)
         self.assertEqual(result, expected)
 
     def test_small_1(self):
@@ -23,12 +23,9 @@ class Tests(unittest.TestCase):
 
     def test_empty(self):
         self.array_testing([])
-    
-    def test_reverse(self):
-        self.array_testing([4, 3, 2, 2, 1, 2 ,30, 2, 4, 5, 6, 25], rev_arg = True)
 
 
-def bubble_sort(arr, reverse = False):
+def bubble_sort(arr):
 
     ''' Sorting arrays to non-decreasing (ascending or same) array using Bubble Sort
     
@@ -36,26 +33,25 @@ def bubble_sort(arr, reverse = False):
     Returns : Non-decreasing (ascending or same) array
     '''
 
-    # indexing from backwards
+    # outer loop: decrementing the no. of passes
     for x in range(len(arr)-1, 0, -1):
-        count = 0
+        swaps = 0
+        
+        # inner loop: incrementing the pass
         for i in range(x):
             if arr[i] > arr[i+1]:
-                count += 1
+                swaps += 1
                 k = arr[i]
                 arr[i] = arr[i+1]
                 arr[i+1] = k
-                
-        if count ==0:
-            if reverse == True:
-                arr = arr[::-1]
-            
+          
+        # if there weren't any swaps, it's already sorted, so return the current array
+        if swaps== 0:
+            print("There were no swaps at iter : {}".format(len(arr)-x))
             return(arr)
-
-    
-    if reverse:
-        arr = arr[::-1]
-    
+           
+            
+        
     return(arr)
 
 
