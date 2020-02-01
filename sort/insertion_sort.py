@@ -37,7 +37,7 @@ def insertion_sort(arr):
     # this is the index for j (the key)
     for j in range(1, len(arr)):
         key = arr[j]
-        i = j-1
+        i = j-1 
 
         # this is the index for i (scan in reverse order)
         while i >= 0 and arr[i] > key:
