@@ -26,7 +26,6 @@ class Tests(unittest.TestCase):
     def test_empty(self):
         self.array_testing([])
 
-
 def insertion_sort(arr):
     ''' Sorting arrays to non-decreasing (ascending or same) array using Insertion Sort
     
@@ -40,6 +39,7 @@ def insertion_sort(arr):
         i = j-1 
 
         # this is the index for i (scan in reverse order)
+        # After this, you will have ordered list till the index i
         while i >= 0 and arr[i] > key:
             arr[i+1] = arr[i]
             i = i-1
