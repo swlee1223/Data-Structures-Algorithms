@@ -59,15 +59,9 @@ def build_tree(frequencies: Dict[str, int]) -> Node:
 
     while len(heap) > 1:
         left = heapq.heappop(heap)
-        # print('Left letters is ' + str(left))
-        # print('Left frequencies are ' + str(left.frequency))
         right = heapq.heappop(heap)
-        # print('Right letters is ' + str(right))
-        # print('Right frequencies are ' + str(right.frequency))
-        
 
         heapq.heappush(heap, InnerNode(left, right))
-        # print('Current heap is ' + str(heap))
     
     return(heapq.heappop(heap))
 
@@ -80,14 +74,11 @@ def build_codes(tree: Node) -> Dict[str, str]:
     def traverse(tree, code, code_map):
         # base case for recursion
         if isinstance(tree, Leaf):
-            # print("Passed Leaf Part")
             code_map[tree.character]= code
             
         else:
-            # print("Passed InnerNode Part")
             assert isinstance(tree, InnerNode)
             traverse(tree.left, code + '1', code_map)
-            # print("Does this pass here?")
             traverse(tree.right, code + '0', code_map)
 
 
@@ -97,18 +88,44 @@ def build_codes(tree: Node) -> Dict[str, str]:
     return(code_map)
     
 
-def encode(text):
-    frequencies = compute_frequences(text)
-    tree = build_tree(frequencies)
-    code_map = build_codes(tree)
-
+def encode(code_map):
     return(''.join(code_map[l] for l in text))
 
 
-# going to implement soon,=
-def decode(encoded_text):
-    pass
+# going to implement soon
+def decode(encoded_text, tree):
+    decoded_text = ''
+    node = tree
+    i = 0
+    while i < len(encoded_text):
+        assert encoded_text[i] in ["0", "1"]
+        while isinstance(node, InnerNode):
+            if encoded_text[i] == "0":
+                node = node.right
+            else:
+                node = node.left
 
-text = "AAAAAAAAAABBBBBBBBBCCCCCCDDDEF"
-encoded_text = encode(text)
-print(encoded_text)
+            i += 1
+
+        assert isinstance(node, Leaf)
+        decoded_text += node.character
+        node = tree
+
+    return(decoded_text)
+
+def print_statement(res, fname):
+    print(fname + ' : ' + str(res))
+
+if __name__ =='__main__':
+    text = "AAAAAAAAAABBBBBBBBBCCCCCCDDDEF"
+    frequencies = compute_frequences(text)
+    print_statement(frequencies, 'Computing Frequences')
+    tree = build_tree(frequencies)
+    print_statement(tree, 'Build Tree')
+    code_map = build_codes(tree)
+    print_statement(code_map, 'Build Codes')
+    encoded_text = encode(code_map)
+    print_statement(encoded_text, 'Encode')
+    decoded_text = decode(encoded_text, tree)
+    print_statement(decoded_text, 'Decode')
+    print_statement(text == decoded_text, "Decoded text same as original text? \n ===> Response")
