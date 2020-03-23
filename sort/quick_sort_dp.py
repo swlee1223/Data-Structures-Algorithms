@@ -69,8 +69,6 @@ def quick_sort_dual(arr):
 
     k1, k2 = compare(arr.pop(0), arr.pop(0))
 
-    # print("k1 is {} and k2 is {}".format(k1 ,k2))
-
     # a is for part where <k1, b is k1 < arr[j] < k2, c is > k2
     A, B, C = [], [], []
     for j in arr:
