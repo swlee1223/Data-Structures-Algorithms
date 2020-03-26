@@ -15,7 +15,7 @@ class MinHeap:
     def __init__(self, arr: List):
         # Copy an array
         self.arr = list(arr)
-        # print("Starting building a heap")
+
         # Make a heap from the array
         self.build_heap()
 
@@ -25,7 +25,6 @@ class MinHeap:
         Must work in O(n) time
         """
         for i in range(len(self.arr)//2, 0, -1):
-            # print("This is for {}th node".format(i))
             self.sift_down(i)
 
     def extract_min(self):
@@ -33,9 +32,10 @@ class MinHeap:
         Returns the smallest value in the heap. Removes the element and rebuild a heap.
         Must work in O(log n) time
         """
-
-        MIN = self.arr.pop(0)
-        self.build_heap()
+        
+        self.arr[0], self.arr[-1] = self.arr[-1], self.arr[0]
+        MIN = self.arr.pop()
+        self.sift_down(1)
         return(MIN)
 
     def sift_down(self, node : int):
@@ -66,16 +66,11 @@ class MinHeap:
 
         count = 0
         while node  > 0 and violated(self.left(node), self.right(node)):
-            # print("Before node : ", node)
             count += 1
             child = min_of_child(self.left(node), self.right(node))
-            # print(child)
             self.arr[child-1], self.arr[node-1] = self.arr[node-1], self.arr[child-1]
-            node = self.parent(node)
-            # print("After node : ", node)
-            # print("For count {}: {}".format(count, self.arr))
+            node = child
 
-        # print("Sift down ended")
         return(self.arr)
             
     @staticmethod
@@ -91,40 +86,55 @@ class MinHeap:
         return( node * 2 +1)
 
 
-def heap_sort(arr: List):
+def heap_sort(arr: List, reverse = False):
     """ Sort the array using MinHeap. Must work in O(n log n) time """
     min_heap = MinHeap(arr)
+    
+    if reverse:
+        l = []
+        for i in range(len(arr)):
+           l = [min_heap.extract_min()] + l
 
-    return([min_heap.extract_min() for i in range(len(arr))])
+        return(l)
+            
+    else:
+        # increasing list
+        return([min_heap.extract_min() for i in range(len(arr))])
 
 class Tests(unittest.TestCase):
-    def array_testing(self, arr):
-        expected = sorted(arr)
-        result = heap_sort(arr)
+    def array_testing(self, arr, reverse = False):
+        expected = sorted(arr, reverse = reverse)
+        result = heap_sort(arr, reverse = reverse)
         self.assertEqual(result, expected)
 
     def test_small(self):
         self.array_testing([1,3,4,2])
 
+    def test_non_decreasing(self):
+        self.array_testing([10,9,8,7,6,5,4,3,2,1,0])
+        self.array_testing([10,9,8,7,6,5,4,3,2,1,0], reverse = True)
+
+    def test_non_increasing(self):
+        self.array_testing([0,1,2,3,4,5,6,7,8,9,10])
+        self.array_testing([0,1,2,3,4,5,6,7,8,9,10], reverse = True)
+
     def test_random(self):
         self.array_testing(list(np.random.randint(1, 50, 100)))
 
-    # def test_big_random(self):
-    #     self.array_testing(list(np.random.randint(int(-1e2), int(1e2), int(1e3))))
+    def test_big_random(self):
+        self.array_testing(list(np.random.randint(int(-1e2), int(1e2), int(1e3))))
     
-    # def test_larger_random(self):
-    #     self.array_testing(list(np.random.randint(int(-1e2), int(1e2), int(1e5))))
+    def test_larger_random(self):
+        self.array_testing(list(np.random.randint(int(-1e2), int(1e2), int(1e5))))
 
-    # def test_largest_random(self):
-    #     self.array_testing(list(np.random.randint(int(-1e3), int(1e3), int(1e6))))
+    def test_largest_random(self):
+        self.array_testing(list(np.random.randint(int(-1e3), int(1e3), int(1e6))))
 
-    # def test_empty(self):
-    #     self.array_testing([])
+    def test_empty(self):
+        self.array_testing([])
 
-    # def test_repeat(self):
-    #     self.array_testing(list([3, 3, 3, 2, 2, 2, 4, 4, 5]))
+    def test_repeat(self):
+        self.array_testing(list([3, 3, 3, 2, 2, 2, 4, 4, 5]))
 
 if __name__ == '__main__':
     unittest.main()
-    # x = MinHeap([5,4,2,1,3,2])
-    # print(x.arr)
