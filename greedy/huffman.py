@@ -87,12 +87,11 @@ def build_codes(tree: Node) -> Dict[str, str]:
 
     return(code_map)
     
-
+# given code map, decodes based on the frequency of the words.
 def encode(code_map):
     return(''.join(code_map[l] for l in text))
 
-
-# going to implement soon
+# use the tree to decode the encoded text.
 def decode(encoded_text, tree):
     decoded_text = ''
     node = tree
