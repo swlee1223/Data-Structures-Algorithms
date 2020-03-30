@@ -47,11 +47,8 @@ def bubble_sort(arr):
           
         # if there weren't any swaps, it's already sorted, so return the current array
         if swaps== 0:
-            print("There were no swaps at iter : {}".format(len(arr)-x))
             return(arr)
-           
-            
-        
+    
     return(arr)
 
 
