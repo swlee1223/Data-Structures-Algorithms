@@ -1,2 +1,5 @@
 # Algorithms
-This is my implementation of the famous algorithms.
+
+My implementation of the top algorithms.
+
+The materials come from B505 Applied Algorithms class by Grigory Yaroslavtsev.
